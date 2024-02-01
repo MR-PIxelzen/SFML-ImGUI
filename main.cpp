@@ -52,12 +52,59 @@ int main() {
                         break;
                     }
                 }
+                else if (event.key.code == sf::Keyboard::Space && event.key.control) {
+                    // Resize the window to 1296 x 776 when Ctrl+Space is pressed
+                    window.setSize(sf::Vector2u(1296, 776));
+                }
+
             }
 
         }
 
         ImGui::SFML::Update(window, clock.restart());
 
+        // ImGui window for displaying text
+        if (currentMode == Windowed) {
+            ImGui::BeginMainMenuBar();
+
+            // Add menus here
+            if (ImGui::BeginMenu("File")) {
+                if (ImGui::MenuItem("Open", "Ctrl+O")) {
+                    // Handle open action
+                }
+                if (ImGui::MenuItem("Save", "Ctrl+S")) {
+                    // Handle save action
+                }
+                if (ImGui::MenuItem("Exit", "Ctrl+Ait")) {
+                    // Handle exit action
+                    window.close(); // Close the window or implement your own exit logic
+                }
+                ImGui::EndMenu();
+            }
+
+            // "About" menu
+            if (ImGui::BeginMenu("About")) {
+                if (ImGui::MenuItem("About")) {
+                    // Handle opening the about page
+                    ImGui::OpenPopup("AboutPopup");
+                }
+                ImGui::EndMenu();
+            }
+
+
+            if (ImGui::BeginPopupModal("AboutPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+                ImGui::Text("This is the about page!");
+                if (ImGui::Button("OK", ImVec2(120, 0))) {
+                    ImGui::CloseCurrentPopup();
+                }
+                ImGui::EndPopup();
+            }
+
+            // Add more menus as needed
+
+
+            ImGui::EndMainMenuBar();
+        }
 
         // ImGui window for displaying text
         ImGui::Begin("Window Mode");
@@ -93,7 +140,7 @@ int main() {
 
 
         // Update window title based on graphics API
-        window.setTitle("Demu- Graphics API: " + std::string(window.getSystemHandle() ? "OpenGL" : "DirectX"));
+        window.setTitle("Demu- : " + std::string(window.getSystemHandle() ? "OpenGL" : "DirectX"));
 
         // Update game logic here
 
